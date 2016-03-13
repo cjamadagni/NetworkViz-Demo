@@ -1,4 +1,4 @@
-#Run this in Escher to visualize a WheelGraph
+#NetworkViz.jl demo
 
 using LightGraphs
 using NetworkViz
@@ -15,12 +15,28 @@ function main(window)
     toggle = Input(false)
     slidebody(body) = body |> fontsize(1.2em) |> fontweight(400)
 
+
+    tabbar = tabs([
+    			hbox(icon("face"), hskip(1em), "Tab 1"),
+    			hbox(icon("explore"), hskip(1em), "Tab 2"),
+			])
+
+	tabcontent = pages([
+		drawGraph(CompleteGraph(6),1),
+		drawGraph(CompleteGraph(6),0),
+	])
+
+	t, p = wire(tabbar, tabcontent, :tab_channel, :selected)
+
     # Complete Graph Example
     completeGraphExample= vbox(
     	title(2,"Complete Graph Example"),
         vskip(2em),
+        "This is a 3D visualization of a complete graph with 6 nodes.",
+
+        vbox(t,p)
         
-        drawGraph(CompleteGraph(8),1)
+        #drawGraph(CompleteGraph(6),1)
 
         ) |> size(80em, 50em)
 
