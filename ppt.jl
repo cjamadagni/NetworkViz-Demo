@@ -14,7 +14,7 @@ function main(window)
     push!(window.assets, ("ThreeJS","threejs"))
     num = Input(10)
     toggle = Input(false)
-    slidebody(body) = body |> fontsize(1.2em) 
+    slidebody(body) = body |> fontsize(1.2em) |> lineheight(2em) 
 
 
     tabbar = tabs([
@@ -92,7 +92,9 @@ function main(window)
         Julia’s LLVM-based just-in-time (JIT) compiler combined with the language’s design allow it to approach and often match the performance of C. This allows for the ease of use of languages similar to python at the performance of C.
         """,
         vskip(2em),
-        image("https://drive.google.com/file/d/0B414CCVd1zpIT2doRjZxLXppekY4SmEydkx1YllJbk16UVRR/view?usp=sharing")
+        # image("https://drive.google.com/file/d/0B414CCVd1zpIT2doRjZxLXppekY4SmEydkx1YllJbk16UVRR/view?usp=sharing")
+
+        image("/pkg/Escher/whyjulia.jpg")
 
     ) |>slidebody |> pad(6em),
 
@@ -117,11 +119,31 @@ function main(window)
 
     completeGraphExample,
     
-    wheelGraphExample,
+    wheelGraphExample |> pad(2em),
 
-    md"""
-    Next slide
-    """ |>slidebody
+    vbox(
+        title(3,"Where do we go from here?"),
+        vskip(2.5em),
+        md"""
+        We hope to expand our library to support extensive animations that would further our goal of creating a library which allows users to perceive and understand some of the most complex network structures be it in city management or educational circles. 
+        We also imagine it to have specific applications in the area of network topology visualization which would allow for it to be used as an instrumental part of network configuration simulators.
+
+        Another interesting real-world application we can hope to target is a simple way to visualize complex city road structures and signals which currently require specialists trained in traffic network simulators like SUMO, using our library it would be a far simpler task to work off of a gui which allows you to views the entire traffic network at a glance and also zero in on specific locations in the city layout.
+        """
+    ) |>slidebody |> pad(6em),
+
+        vbox(
+        title(3,"What is our next step?"),
+        vskip(2.5em),
+        md"""
+        The third Julia conference will take place June 21st-25th, 2016 at the Massachusetts Institute of Technology in Cambridge, Massachusetts. We hope to present a talk at this prestigious conference on our work with NetworkViz.jl library and have started preparations to achieve the same.
+
+        We also hope to submit a research paper on our work to the SummerSim’16 conference to be held from July 24-27, 2016 at Palais des congres de Montreal, Quebec, Canada which is a conference focussed on modeling and simulation tools, theory, methodologies and applications and is thus a forum for the latest R&D results in academia and industry.
+        """
+    ) |>slidebody |> pad(6em),
+
+
+    
 
 
 
