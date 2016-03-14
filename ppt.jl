@@ -341,6 +341,73 @@ function main(window)
     ) |>slidebody |> pad(6em),
 
     vbox(
+        title(3,"Further Development"),
+        vskip(2.5em),
+        md"""
+
+        - Building a Test Suite.
+
+        - Adding extensive animation capabilities.
+
+        - Integrating code coverage. `Codecov` is a tool which checks whether the test suite covers all utilities and operations of the library.
+
+        - Integration with `Blink.jl`
+
+        - Improving text support.
+
+        - Calling Julia from a Python program is a GSoC'16 project. If implemented successfully, this library can replace PyViz as the default visualization tool in network simulators like ns3 an ns2.
+
+        """
+
+    ) |>slidebody |> pad(6em),
+
+    vbox(
+        title(3,"Pure Julia Implementation"),
+        vskip(2.5em),
+        md"""
+        As you can see from the image below, `NetworkViz` is entirely written in Julia. Since there are no external language dependencies we are making full use of the benefits offered by the Julia programming language.
+
+        """,
+        vskip(2em),
+        image("/pkg/Escher/langdetails.png")
+
+    ) |>slidebody |> pad(6em),
+
+    vbox(
+        title(3,"JuliaGraphs Organization"),
+        vskip(2.5em),
+        md"""
+        JuliaGraphs is an organization responsible for all the graph libraries in Julia. They have acknowledged that this library is a significant contribution and they are aiding in it's development and maintenance.
+
+        Below is a Github conversation snippet we had with Carlo Lucibello. He is the second highest contributor to JuliaGraphs repositories.
+
+        """,
+        vskip(2em),
+        image("/pkg/Escher/talkingtojulia.png")
+
+    ) |>slidebody |> pad(6em),
+
+    vbox(
+        title(3,"Contributors"),
+        vskip(2.5em),
+        md"""
+        - Abhijith AnilKumar `13CO102`
+
+        - Chirag Jamadagni `13CO117`
+
+        - Kevin T Mathew `13CO224`
+
+        """,
+
+    ) |>slidebody |> pad(6em),
+
+    vbox(
+        title(3,"Thankyou"),
+        vskip(2.5em),
+    ) |>slidebody |> pad(6em),
+
+
+    vbox(
         title(3,"Where do we go from here?"),
         vskip(2.5em),
         md"""
