@@ -197,14 +197,15 @@ function main(window)
         vskip(2.5em),
         md"""
         No 3D scene can be properly displayed without a camera to view from. We provide support for a Perspective Camera view using the camera function.
-    		This sets the position of the camera, along with properties like near plane, far plane, fov for field of view (in degrees), and aspect ratio.
+
+        This sets the position of the camera, along with properties like near plane, far plane, fov for field of view (in degrees), and aspect ratio.
 
         `PerspectiveCamera(fov, aspect, near, far)`
 
-    		- `fov` — Camera frustum vertical field of view.
-    		- `aspect` — Camera frustum aspect ratio.
-    		- `near` — Camera frustum near plane.
-    		- `far` — Camera frustum far plane.
+        - `fov` — Camera frustum vertical field of view.
+        - `aspect` — Camera frustum aspect ratio.
+        - `near` — Camera frustum near plane.
+        - `far` — Camera frustum far plane.
         """
 
     ) |>slidebody |> pad(6em),
@@ -250,13 +251,14 @@ function main(window)
         title(3,"Spring Embedder Algorithm"),
         vskip(2.5em),
         md"""
-        We have managed to create a stable, robust graph visualization library which allows the user to bring any graph or A spring embedder considers the nodes little metal rings in the plane that are connected by springs and that therefore repel or attract each other.
+          A spring embedder considers the nodes little metal rings in the plane that are connected by springs and that therefore repel or attract each other.
 
-     		A spring embedder works in iterations. In each iteration, the forces exerted on each node v are computed. Each incident edge (u,v) attracts the node v with the force f(u,v) in the direction of u, with f(u,v) being proportional to the difference from the distance of u and v and the length of the spring (“Hooke's Law”). Conversely, each leaving edge (v,u) repels the node v away from from u with the force f(v,u)=−f(u,v).
+          A spring embedder works in iterations. In each iteration, the forces exerted on each node v are computed. Each incident edge (u,v) attracts the node v with the force f(u,v) in the direction of u, with f(u,v) being proportional to the difference from the distance of u and v and the length of the spring (“Hooke's Law”). Conversely, each leaving edge (v,u) repels the node v away from from u with the force f(v,u)=−f(u,v).
 
-     		After all forces have been summed up, the rings are moved in the plane according to the forces exerted on them. (By the force exerted on it, a ring is subject to a certain acceleration into a certain direction that is considered constant for a short period; the new position of the ring is the position at the end of this period.) Then the spring embedder steps into the next iteration.
+          After all forces have been summed up, the rings are moved in the plane according to the forces exerted on them. (By the force exerted on it, a ring is subject to a certain acceleration into a certain direction that is considered constant for a short period; the new position of the ring is the position at the end of this period.) Then the spring embedder steps into the next iteration.
 
-     		With a sufficiently large number of iterations, a state of equilibration is reached, in which the force exerted on each ring is 0.
+          With a sufficiently large number of iterations, a state of equilibration is reached, in which the force exerted on each ring is 0.
+
         """
 
     ) |>slidebody |> pad(6em),
@@ -387,25 +389,6 @@ function main(window)
 
     ) |>slidebody |> pad(6em),
 
-    vbox(
-        title(3,"Contributors"),
-        vskip(2.5em),
-        md"""
-        - Abhijith AnilKumar `13CO102`
-
-        - Chirag Jamadagni `13CO117`
-
-        - Kevin T Mathew `13CO224`
-
-        """,
-
-    ) |>slidebody |> pad(6em),
-
-    vbox(
-        title(3,"Thankyou"),
-        vskip(2.5em),
-    ) |>slidebody |> pad(6em),
-
 
     vbox(
         title(3,"Where do we go from here?"),
@@ -428,12 +411,24 @@ function main(window)
         """
     ) |>slidebody |> pad(6em),
 
+    vbox(
+        title(3,"Contributors"),
+        vskip(2.5em),
+        md"""
+        - Abhijith AnilKumar `13CO102`
 
+        - Chirag Jamadagni `13CO117`
 
+        - Kevin T Mathew `13CO224`
 
+        """,
 
+    ) |>slidebody |> pad(6em),
 
-
+    vbox(
+        title(3,"Thankyou"),
+        vskip(2.5em),
+    ) |>slidebody |> pad(6em),
 
     ])
 end
