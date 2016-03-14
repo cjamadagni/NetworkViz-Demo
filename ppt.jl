@@ -4,6 +4,7 @@ using LightGraphs
 using NetworkViz
 using ThreeJS
 using Colors
+using Escher
 
 
 function main(window)
@@ -15,6 +16,16 @@ function main(window)
     num = Input(10)
     toggle = Input(false)
     slidebody(body) = body |> fontsize(1.2em) |> lineheight(2em) 
+
+    g = Graph(10)
+
+    # For animate.jl
+    fps1 = fps(1)
+    frames = foldp(+, 1, map((x)->1, fps1))
+    running = map(x->x<49, frames)
+
+    # For edgeanim.jl
+    running2 = map(x->x<9, frames)
 
 
     tabbar = tabs([
@@ -28,6 +39,30 @@ function main(window)
     ])
 
     t, p = wire(tabbar, tabcontent, :tab_channel, :selected)
+
+
+
+    # Text Support Example
+    textSupport = vbox(
+            drawGraphwithText(CompleteGraph(10),1)
+            ) |> size(80em, 50em) |> pad(6em)
+
+
+    # Edge Animation Example
+    edgeAnimate = vbox(
+            map(fpswhen(running2, 1)) do _
+                addEdge(g,frames.value,frames.value+1,1)
+            end
+        ) |> pad(2em)
+
+
+
+    # Animate.jl Example
+    animate = vbox(
+        map(fpswhen(running, 1)) do _
+            drawGraph(WheelGraph(frames.value+1),1)
+        end
+    )
 
     # Complete Graph Example
     completeGraphExample= vbox(
@@ -121,22 +156,77 @@ function main(window)
     wheelGraphExample |> pad(2em),
 
     vbox(
-        title(3,"BFS Example"),
+        title(3,"Add Edge Demo"),
         vskip(2.5em),
         md"""
-        Example of the BFS algorithm
+        The following program demonstrates edges being added to an empty graph of 10 nodes. Trying to add an edge which already exists results in the edge being re drawn. 
+        """,
+        Elem(:a, "Link", attributes = Dict(:href => "http://localhost:3000/addedge.jl"))
+
+    ) |>slidebody |> pad(6em),
+
+    vbox(
+        title(3,"Remove Edge Demo"),
+        vskip(2.5em),
+        md"""
+        The following examples shows a complete graph with 10 vertices. Edges can be removed one after the other by entering the source and destination vertices. Attempting to remove an edge which doesn't exist will trigger a silent failure.  
+        """,
+        Elem(:a, "Link", attributes = Dict(:href => "http://localhost:3000/removeedge.jl"))
+
+    ) |>slidebody |> pad(6em),
+
+    vbox(
+        title(3,"Breadth First Search Example"),
+        vskip(2.5em),
+        md"""
+        The following example shows a complete graph. The number of vertices can lie in the range 10-100. Breadth First Search Operation is performed with node 1 as the starting vertex. The result will be an acyclic graph. 
         """,
         Elem(:a, "Link", attributes = Dict(:href => "http://localhost:3000/bfs.jl"))
 
     ) |>slidebody |> pad(6em),
 
+
     vbox(
-        title(3,"Add Edge Example"),
+        title(3,"Code Mirror Example"),
         vskip(2.5em),
         md"""
-        Example of the addEdge
+        This is an example for a live code or hot code. Valid Julia graph operations can be typed in the editor and the appropriate change will be immediately reflected. Any error will fail silently. 
         """,
-        Elem(:a, "Link", attributes = Dict(:href => "http://localhost:3000/addedge.jl"))
+        Elem(:a, "Link", attributes = Dict(:href => "http://localhost:3000/typefunction.jl"))
+
+    ) |>slidebody |> pad(6em),
+
+    vbox(
+        title(3,"Text Support Example"),
+        vskip(2.5em),
+        md"""
+        This is an example for basic text support. Each vertex is associated with a `node ID`. 
+        """,
+        #Elem(:a, "Link", attributes = Dict(:href => "http://localhost:3000/text.jl"))
+        textSupport
+
+    ) |>slidebody |> pad(6em),
+
+    vbox(
+        title(3,"Animation Example"),
+        vskip(2.5em),
+        md"""
+        This is an example for graph animation. On clicking the link, you will see a growing wheel graph. The graph will grow until it has 50 nodes.    
+        """,
+        
+        Elem(:a, "Link", attributes = Dict(:href => "http://localhost:3000/animate.jl"))
+
+
+    ) |>slidebody |> pad(6em),
+
+        vbox(
+        title(3,"Example of a path"),
+        vskip(2.5em),
+        md"""
+        This example shows an animation for a walk/path having 10 nodes.     
+        """,
+        
+        Elem(:a, "Link", attributes = Dict(:href => "http://localhost:3000/edgeanim.jl"))
 
     ) |>slidebody |> pad(6em),
 

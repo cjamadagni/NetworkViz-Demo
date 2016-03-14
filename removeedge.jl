@@ -1,25 +1,27 @@
-# Example which demonstrates adding an edge
+# Example which demonstrates removing an edge
 
 using LightGraphs
 using NetworkViz
 using ThreeJS
 using Escher
 
-g = Graph(10)
+g = CompleteGraph(10)
+
+@show typeof(g)
 
 main(window) = begin
   push!(window.assets, "widgets")
   push!(window.assets,("ThreeJS","threejs"))
 
-  inp = Signal(Dict{Any, Any}(:node1=>"3",:node2=>"3"))
+  inp = Signal(Dict{Any, Any}(:node1=>"1",:node2=>"3"))
 
   s = Escher.sampler()
   sampler = Escher.sampler()
   form = vbox(
-      h1("Add New Edge"),
+      h1("Remove Edge"),
       watch!(s, :node1, textinput("", label="Source Vertex")),
       watch!(s, :node2, textinput("", label="Destination Vertex")),
-      trigger!(s, :submit, button("Add Edge"))
+      trigger!(s, :submit, button("Remove Edge"))
   ) |> maxwidth(400px)
 
   map(inp) do dict
@@ -28,7 +30,7 @@ main(window) = begin
       vbox(
           intent(s, form) >>> inp,
           vskip(2em),
-          addEdge(g, node1, node2, 0)
+          removeEdge(g, node1, node2, 1)
       ) |> Escher.pad(2em)
   end
 end
