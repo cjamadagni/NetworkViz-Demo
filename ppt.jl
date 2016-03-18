@@ -426,7 +426,7 @@ function main(window)
     ) |>slidebody |> pad(6em),
 
     vbox(
-        title(3,"Thankyou"),
+        title(3,"Thank you"),
         vskip(2.5em),
     ) |>slidebody |> pad(6em),
 
