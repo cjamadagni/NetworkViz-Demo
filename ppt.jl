@@ -13,11 +13,22 @@ function main(window)
     push!(window.assets, "tex")
     push!(window.assets, "layout2")
     push!(window.assets, ("ThreeJS","threejs"))
-    num = Input(10)
-    toggle = Input(false)
+    push!(window.assets, "codemirror")
+    num = Signal(10)
+    toggle = Signal(false)
     slidebody(body) = body |> fontsize(1.2em) |> lineheight(2em)
 
     g = Graph(10)
+
+    usage_code = """g = CompleteGraph(10)
+    c = Color[parse(Colorant,"#00004d") for i in 1:nv(g)]
+    n = NodeProperty(c,0.2,0) #NodeProperty(color,size,shape)
+    e = EdgeProperty("#ff3333",1) #EdgeProperty(color,width)
+    drawGraph(g,node=n,edge=e,z=1) #Draw using a Graph object (3D).
+    am = full(adjacency_matrix(g))
+    drawGraph(am,node=n,edge=e,z=0) #Draw using an adjacency matrix (2D).
+    dgraph = bfs_tree(g,1)
+    drawGraph(dgraph,z=1) #Draw a Digraph."""
 
     # For animate.jl
     fps1 = fps(1)
@@ -34,8 +45,8 @@ function main(window)
             ])
 
     tabcontent = pages([
-        drawGraph(CompleteGraph(6),1),
-        drawGraph(CompleteGraph(6),0),
+        drawGraph(CompleteGraph(6),z=1),
+        drawGraph(CompleteGraph(6),z=0),
     ])
 
     t, p = wire(tabbar, tabcontent, :tab_channel, :selected)
@@ -60,7 +71,7 @@ function main(window)
     # Animate.jl Example
     animate = vbox(
         map(fpswhen(running, 1)) do _
-            drawGraph(WheelGraph(frames.value+1),1)
+            drawGraph(WheelGraph(frames.value+1),z=1)
         end
     )
 
@@ -106,143 +117,51 @@ function main(window)
     vbox(title(4,"NetworkViz.jl")),
 
     vbox(
-        title(3,"What have we worked on?"),
+        title(3,"What does NetworkViz do?"),
         vskip(2.5em),
-        "We have created a graph visualization library in Julia language which allows for both 2D and 3D visualizations of graphs which can be input by the users. We have also incorporated zoom capability to allow the library to be used for a multitude of applications including education, traffic signal network visualisation, complex internet network visualizations etc. in which everything revolves around graphs and our ability to perceive and comprehend them."
-    ) |>slidebody |> pad(6em),
-
-    vbox(
-        title(3,"What is Julia?"),
-        vskip(2.5em),
-        md"""
-        Julia is a high-level, high-performance dynamic programming language for technical computing, with syntax that is familiar to users of other technical computing environments. It is also a NumFocus project started by students at MIT which was commercialised in 2012 and is now a full fledged startup, Julia Computing.
-        """
+        "NetworkViz is a graph visualization package in Julia which allows for both 2D and 3D visualizations of graphs which can be input by the users. The package can be used for a multitude of applications including education, traffic signal network visualisation, complex internet network visualizations etc. in which everything revolves around graphs and our ability to perceive and comprehend them."
     ) |>slidebody |> pad(6em),
 
 
     vbox(
-        title(3,"Why Julia?"),
+        title(3,"Why NetworkViz?"),
         vskip(2.5em),
         md"""
-        Julia’s LLVM-based just-in-time (JIT) compiler combined with the language’s design allow it to approach and often match the performance of C. This allows for the ease of use of languages similar to python at the performance of C.
+        * Existing Graph visualization packages support only 2D visualization.
+
+        * Using NetworkViz with Escher helps in creating interactive applications.
+
+        * Use of ThreeJS (uses WebGL) makes the package easy to use without any additional plugins.
         """,
         vskip(2em),
-        # image("https://drive.google.com/file/d/0B414CCVd1zpIT2doRjZxLXppekY4SmEydkx1YllJbk16UVRR/view?usp=sharing")
-
-        image("/pkg/Escher/whyjulia.jpg")
 
     ) |>slidebody |> pad(6em),
 
     vbox(
-        title(3,"What have we achieved?"),
+        title(3,"Using NetworkViz - Pros"),
         vskip(2.5em),
         md"""
-        We have managed to create a stable, robust graph visualization library which allows the user to bring any graph or operational result to life through a 3D/2D visualization of the same.
-        Salient features of our project:
+        NetworkViz is a stable graph visualization package which allows the user to bring any graph or operational result to life through a 3D/2D visualization of the same.
+        Salient features:
 
         - Allows for easy toggling between 2D and 3D representations of the graph, i.e.  any graph which is input would result in a visualization being rendered which can be switched from 2D to 3D by changing the z-axis parameter allowing for a more vibrant experience.
 
         - Only requires adjacency matrix for graph visualization; any and all graphs to be input by the user can be done using an adjacency matrix which would now provide the opportunity to visualize the effect of various graph operations on the graph structure.
 
-        - Tight coupling with existing(non-visualization) graph libraries in Julia which allows for easier expansions in the future along with stronger credibility within the Julia community.
-
-        - Zoom capability for careful examination of the graph and its intricate structural changes due to various operations and for viewing the larger layout of the graph allowing for a wider network topology view of the graph.
+        - Tight coupling with LightGraphs.jl, i.e. a LightGraphs object can be visualized directly by passing it to NetworkViz.
         """
 
     ) |>slidebody |> pad(6em),
 
     vbox(
-        title(3,"WebGL"),
+        title(3,"How does it work?"),
         vskip(2.5em),
         md"""
-        WebGL (Web Graphics Library) is a JavaScript API for rendering interactive 3D computer graphics and 2D graphics within any compatible web browser without the use of plug-ins.
+        * NetworkViz uses ThreeJS.jl for visualizing graphs using WebGL.
 
-        - Since it works in a web browser, it's platform independent.
+        * Uses Spring Embedder Algorithm for calculating co-ordinates.
 
-        - We are using a Julia abstraction over WebGL to render 3D and 2D objects.
-
-        - Our Julia code triggers the execution of javascript code in the browser. The browser then executes the code on the computer's GPU.
-        """
-
-    ) |>slidebody |> pad(6em),
-
-    vbox(
-        title(3,"Escher.jl"),
-        vskip(2.5em),
-        md"""
-        We are using `Escher.jl` to serve web UIs written entirely in Julia.
-
-        - Escher's built-in web server allows you to create interactive UIs with very little code. It takes care of messaging between Julia and the browser under-the-hood. It can also hot-load code: you can see your UI evolve as you save your changes to it.
-
-        - The built-in library functions support Markdown, Input widgets, TeX-style Layouts, Styling, TeX, Code, Behaviors, Tabs, Menus, Slideshows, Plots (via Gadfly) and Vector Graphics (via Compose) – everything a Julia programmer would need to effectively visualize data or to create user-facing GUIs. The API comprehensively covers features from HTML and CSS, and also provides advanced features. Its user merely needs to know how to write code in Julia.
-        """
-
-    ) |>slidebody |> pad(6em),
-
-    vbox(
-        title(3,"Reactive Programming"),
-        vskip(2.5em),
-        md"""
-         Reactive programming is a programming paradigm oriented around data flows and the propagation of change. This means that it should be possible to express static or dynamic data flows with ease in the programming languages used, and that the underlying execution model will automatically propagate changes through the data flow.
-
-        - It makes writing event-driven programs simple.
-
-        - `Reactive.jl` contains the pure julia implementation of reactive programming primitives.
-        """
-
-    ) |>slidebody |> pad(6em),
-
-    vbox(
-        title(3,"Camera Primitives"),
-        vskip(2.5em),
-        md"""
-        No 3D scene can be properly displayed without a camera to view from. We provide support for a Perspective Camera view using the camera function.
-
-        This sets the position of the camera, along with properties like near plane, far plane, fov for field of view (in degrees), and aspect ratio.
-
-        `PerspectiveCamera(fov, aspect, near, far)`
-
-        - `fov` — Camera frustum vertical field of view.
-        - `aspect` — Camera frustum aspect ratio.
-        - `near` — Camera frustum near plane.
-        - `far` — Camera frustum far plane.
-        """
-
-    ) |>slidebody |> pad(6em),
-
-    vbox(
-        title(3,"Basic Primitives"),
-        vskip(2.5em),
-        md"""
-         - `addNode(g::Graph, z::Int)`
-
-         - `removeNode(g::Graph, z::Int)`
-
-         - `addEdge(g::Graph, source::Int, destination::Int, z::Int)`
-
-         - `removeEdge(g::Graph, source::Int, destination::Int, z::Int)`
-        """,
-        vskip(1.5em),
-        md"""
-        *z = [0,1] makes the resulting graph 2D or 3D respectively.*
-        """
-
-    ) |>slidebody |> pad(6em),
-
-    vbox(
-        title(3,"Basic Primitives - Drawing the Graph"),
-        vskip(2.5em),
-        md"""
-         `drawGraph` is extremely flexible. It can accept a graph, directed graph or an adjacency matrix.
-
-         - `drawGraph(g::Union{LightGraphs.DiGraph,LightGraphs.Graph},z::Int)`
-
-         - `drawGraph{T}(adjacencyMatrix::Array{T,2},z::Int)`
-
-        """,
-        vskip(1.5em),
-        md"""
-        *z = [0,1] makes the resulting graph 2D or 3D respectively.*
+        * A graph is constructed using *pointcloud()* [that visualizes all the nodes of the graph] and *line()* [used to visualize the edges of the graph]
         """
 
     ) |>slidebody |> pad(6em),
@@ -261,6 +180,57 @@ function main(window)
 
         """
 
+    ) |>slidebody |> pad(6em),
+
+    vbox(
+        title(3,"Basic Primitives - Drawing a Graph"),
+        vskip(2.5em),
+        md"""
+         - `drawGraph(g::Union{LightGraphs.DiGraph,LightGraphs.Graph}; node::NodeProperty, edge::EdgeProperty, z=Int)`
+
+         - `drawGraph(am::Array{Int,2}; node::NodeProperty, edge::EdgeProperty, z=Int)`
+        """,
+        vskip(1.5em),
+        md"""
+        *z = [0,1] makes the resulting graph 2D or 3D respectively.*
+        """
+
+    ) |>slidebody |> pad(6em),
+
+    vbox(
+        title(3,"Basic Primitives - Utility Functions"),
+        vskip(2.5em),
+        md"""
+         - `addNode(g::Graph, z::Int)`
+
+         - `removeNode(g::Graph, z::Int)`
+
+         - `addEdge(g::Graph, source::Int, destination::Int, z::Int)`
+
+         - `removeEdge(g::Graph, source::Int, destination::Int, z::Int)`
+        """,
+        vskip(1.5em),
+        md"""
+        *z = [0,1] makes the resulting graph 2D or 3D respectively.*
+        """
+
+    ) |>slidebody |> pad(6em),
+
+    vbox(
+        title(3,"Usage - Drawing a Graph"),
+        vskip(2.5em),
+        md"""
+        The drawGraph function can be used to draw the graphs in 2D or 3D with nodes having different colors. It can accept *LightGraphs.Graph* and *LightGraphs.Digraph* types. *drawGraph* can be used to draw graphs from adjacency matrices also. The function accepts additional kwargs *node::NodeProperty*, *edge::EdgeProperty*, and *z*. If *z=1*, it draws a 3D graph. If *z=0*, a 2D visualization of the graph is drawn. *node* and *edge* determines the properties of nodes and edges respectively.
+
+        """,
+        codemirror(usage_code),
+        vskip(1.5em),
+
+    ) |>slidebody |> pad(6em),
+
+    vbox(
+        title(3,"Demos"),
+        vskip(2.5em),
     ) |>slidebody |> pad(6em),
 
     completeGraphExample,
@@ -347,69 +317,10 @@ function main(window)
         vskip(2.5em),
         md"""
 
-        - Building a Test Suite.
-
-        - Adding extensive animation capabilities.
-
-        - Integrating code coverage. `Codecov` is a tool which checks whether the test suite covers all utilities and operations of the library.
-
-        - Integration with `Blink.jl`
-
-        - Improving text support.
-
-        - Calling Julia from a Python program is a GSoC'16 project. If implemented successfully, this library can replace PyViz as the default visualization tool in network simulators like ns3 an ns2.
-
         """
 
     ) |>slidebody |> pad(6em),
 
-    vbox(
-        title(3,"Pure Julia Implementation"),
-        vskip(2.5em),
-        md"""
-        As you can see from the image below, `NetworkViz` is entirely written in Julia. Since there are no external language dependencies we are making full use of the benefits offered by the Julia programming language.
-
-        """,
-        vskip(2em),
-        image("/pkg/Escher/langdetails.png")
-
-    ) |>slidebody |> pad(6em),
-
-    vbox(
-        title(3,"JuliaGraphs Organization"),
-        vskip(2.5em),
-        md"""
-        JuliaGraphs is an organization responsible for all the graph libraries in Julia. They have acknowledged that this library is a significant contribution and they are aiding in it's development and maintenance.
-
-        Below is a Github conversation snippet we had with Carlo Lucibello. He is the second highest contributor to JuliaGraphs repositories.
-
-        """,
-        vskip(2em),
-        image("/pkg/Escher/talkingtojulia.png")
-
-    ) |>slidebody |> pad(6em),
-
-
-    vbox(
-        title(3,"Where do we go from here?"),
-        vskip(2.5em),
-        md"""
-        We hope to expand our library to support extensive animations that would further our goal of creating a library which allows users to perceive and understand some of the most complex network structures be it in city management or educational circles.
-        We also imagine it to have specific applications in the area of network topology visualization which would allow for it to be used as an instrumental part of network configuration simulators.
-
-        Another interesting real-world application we can hope to target is a simple way to visualize complex city road structures and signals which currently require specialists trained in traffic network simulators like SUMO, using our library it would be a far simpler task to work off of a gui which allows you to views the entire traffic network at a glance and also zero in on specific locations in the city layout.
-        """
-    ) |>slidebody |> pad(6em),
-
-        vbox(
-        title(3,"What is our next step?"),
-        vskip(2.5em),
-        md"""
-        The third Julia conference will take place June 21st-25th, 2016 at the Massachusetts Institute of Technology in Cambridge, Massachusetts. We hope to present a talk at this prestigious conference on our work with NetworkViz.jl library and have started preparations to achieve the same.
-
-        We also hope to submit a research paper on our work to the SummerSim’16 conference to be held from July 24-27, 2016 at Palais des congres de Montreal, Quebec, Canada which is a conference focussed on modeling and simulation tools, theory, methodologies and applications and is thus a forum for the latest R&D results in academia and industry.
-        """
-    ) |>slidebody |> pad(6em),
 
     vbox(
         title(3,"Contributors"),
@@ -423,6 +334,11 @@ function main(window)
 
         """,
 
+    ) |>slidebody |> pad(6em),
+
+    vbox(
+        title(3,"Questions ?"),
+        vskip(2.5em),
     ) |>slidebody |> pad(6em),
 
     vbox(
