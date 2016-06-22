@@ -108,9 +108,6 @@ function main(window)
         ) |> size(80em, 50em)
 
 
-
-
-
     # Display begins here
     slideshow([
 
@@ -182,6 +179,8 @@ function main(window)
 
     ) |>slidebody |> pad(6em),
 
+    completeGraphExample,
+
     vbox(
         title(3,"Basic Primitives - Drawing a Graph"),
         vskip(2.5em),
@@ -233,8 +232,6 @@ function main(window)
         vskip(2.5em),
     ) |>slidebody |> pad(6em),
 
-    completeGraphExample,
-
     wheelGraphExample |> pad(2em),
 
     vbox(
@@ -244,16 +241,6 @@ function main(window)
         The following program demonstrates edges being added to an empty graph of 10 nodes. Trying to add an edge which already exists results in the edge being re drawn.
         """,
         Elem(:a, "Link", attributes = Dict(:href => "http://localhost:3000/addedge.jl"))
-
-    ) |>slidebody |> pad(6em),
-
-    vbox(
-        title(3,"Remove Edge Demo"),
-        vskip(2.5em),
-        md"""
-        The following examples shows a complete graph with 10 vertices. Edges can be removed one after the other by entering the source and destination vertices. Attempting to remove an edge which doesn't exist will trigger a silent failure.
-        """,
-        Elem(:a, "Link", attributes = Dict(:href => "http://localhost:3000/removeedge.jl"))
 
     ) |>slidebody |> pad(6em),
 
@@ -301,44 +288,19 @@ function main(window)
 
     ) |>slidebody |> pad(6em),
 
-        vbox(
-        title(3,"Example of a path"),
-        vskip(2.5em),
-        md"""
-        This example shows an animation for a walk/path having 10 nodes.
-        """,
-
-        Elem(:a, "Link", attributes = Dict(:href => "http://localhost:3000/edgeanim.jl"))
-
-    ) |>slidebody |> pad(6em),
-
     vbox(
         title(3,"Further Development"),
         vskip(2.5em),
         md"""
+        NetworkViz is a new package that is still in its infancy. There are many aspects in which it requires improvement.
+
+        * The Spring Embedder Algorithm takes nearly 2 mins for computing co-ordinates of a graph with 10,000 edges (Slow!)
+        * Better text support
+        * Coloring and sizing of individual edges and nodes
+        * Blink Integration
 
         """
 
-    ) |>slidebody |> pad(6em),
-
-
-    vbox(
-        title(3,"Contributors"),
-        vskip(2.5em),
-        md"""
-        - Abhijith AnilKumar `13CO102`
-
-        - Chirag Jamadagni `13CO117`
-
-        - Kevin T Mathew `13CO224`
-
-        """,
-
-    ) |>slidebody |> pad(6em),
-
-    vbox(
-        title(3,"Questions ?"),
-        vskip(2.5em),
     ) |>slidebody |> pad(6em),
 
     vbox(
